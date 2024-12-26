@@ -1,6 +1,5 @@
 const postModel = require("../Models/postSchema");
 const userModel = require("../Models/userSchema");
-const query = require("querystring");
 
 // This creates posts
 const postsCreate = async (req, res) => {
@@ -39,7 +38,7 @@ const posts = async (req, res) => {
           select: "username profileImg",
         },
       })
-      .populate({ 
+      .populate({
         path: "likes",
         select: "username profileImg",
       })

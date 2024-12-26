@@ -6,13 +6,14 @@ dotenv.config();
 
 // creates new user
 const signup = async (req, res) => {
-  const { username, password, email } = req.body;
+  const { username, password, email, profileImg } = req.body;
   console.log(req.body);
   try {
     const reso = await userModel.create({
       username: username,
       password: password,
       email: email,
+      profileImg: profileImg,
     });
 
     const payload = {
