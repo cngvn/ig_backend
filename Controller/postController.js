@@ -1,15 +1,15 @@
 const postModel = require("../Models/postSchema");
 const userModel = require("../Models/userSchema");
 
-// This creates posts
 const postsCreate = async (req, res) => {
-  const { caption, postImg, userId } = req.body;
+  const { caption, postImg, userId, postId } = req.body;
 
   try {
     const createdPost = await postModel.create({
       caption,
       postImg,
       userId,
+      postId,
     });
 
     const response = await userModel.findByIdAndUpdate(userId, {
@@ -25,7 +25,6 @@ const postsCreate = async (req, res) => {
   }
 };
 
-// finds all posts and populates the users info
 const posts = async (req, res) => {
   try {
     const posts = await postModel
@@ -53,7 +52,6 @@ const posts = async (req, res) => {
   }
 };
 
-// finds all posts and populates the comments id
 const postsComment = async (req, res) => {
   const { postId } = req.params;
 
