@@ -22,5 +22,21 @@ const comment = async (req, res) => {
     res.json(err);
   }
 };
+const comments = async (req, res) => {
+  const { postId } = req.params;
+  try {
+    const comment = await postModel.findById(postId).populate({
+      path: "comment",
+      populate: {
+        path: "userId",
+        select: "username profileImg",
+      },
+    });
+    res.send(comment);
+  } catch (error) {
+    res.send("err");
+    console.log(error);
+  }
+};
 
-module.exports = { comment };
+module.exports = { comment, comments };
