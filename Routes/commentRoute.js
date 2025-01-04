@@ -5,6 +5,6 @@ const auth = require("../authenticator");
 const commentRoute = Router();
 
 commentRoute.post("/comment", auth, comment);
-commentRoute.get("/comments:postId", auth, comments);
+commentRoute.get("/comments/:postId", auth, comments);
 
 module.exports = commentRoute;
