@@ -1,6 +1,7 @@
 const likeModel = require("../Models/likeSchema");
 const postModel = require("../Models/postSchema");
 
+// Liking a post
 const like = async (req, res) => {
   const { userId, postId } = req.body;
 
@@ -12,7 +13,7 @@ const like = async (req, res) => {
     const response = await postModel.findByIdAndUpdate(
       postId,
       {
-        $addToSet: { likes: userId },
+        $addToSet: { likes: userId }, // Add user to likes array
       },
       { new: true }
     );
@@ -23,6 +24,7 @@ const like = async (req, res) => {
   }
 };
 
+// Unliking a post
 const unlike = async (req, res) => {
   const { userId, postId } = req.body;
 
@@ -32,7 +34,7 @@ const unlike = async (req, res) => {
 
   try {
     const response = await postModel.findByIdAndUpdate(postId, {
-      $pull: { likes: userId },
+      $pull: { likes: userId }, // Remove user from likes array
     });
 
     res.json(response);
@@ -41,22 +43,22 @@ const unlike = async (req, res) => {
   }
 };
 
-const coutLike = async (req, res) => {
-  const { postId } = req.body;
+// Check if the user has already liked the post
+const checkLikeStatus = async (req, res) => {
+  const { postId, userId } = req.body;
 
-  if (!postId) {
-    return res.status(400).json({ error: "Post ID is required" });
+  if (!userId || !postId) {
+    return res.status(400).json({ error: "User ID and Post ID are required" });
   }
 
   try {
-    const response = await postModel
-      .findById({ _id: postId })
-      .populate("likes", "username profileImg");
+    const post = await postModel.findById(postId);
+    const isLiked = post.likes.includes(userId);
 
-    res.json(response);
+    res.json({ isLiked });
   } catch (err) {
     res.status(500).json(err);
   }
 };
 
-module.exports = { unlike, like, coutLike };  
+module.exports = { like, unlike, checkLikeStatus };
