@@ -13,7 +13,7 @@ const like = async (req, res) => {
     const response = await postModel.findByIdAndUpdate(
       postId,
       {
-        $addToSet: { likes: userId }, // Add user to likes array
+        $addToSet: { likes: userId }, 
       },
       { new: true }
     );
@@ -34,7 +34,7 @@ const unlike = async (req, res) => {
 
   try {
     const response = await postModel.findByIdAndUpdate(postId, {
-      $pull: { likes: userId }, // Remove user from likes array
+      $pull: { likes: userId }, 
     });
 
     res.json(response);

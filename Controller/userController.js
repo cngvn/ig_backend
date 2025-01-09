@@ -86,7 +86,6 @@ const userPosts = async (req, res) => {
   }
 };
 
-// follows followId with userId
 const follow = async (req, res) => {
   const { userId, followId } = req.body;
 
@@ -121,7 +120,6 @@ const follow = async (req, res) => {
   }
 };
 
-// unfollows unfollowId with userId
 const unfollow = async (req, res) => {
   const { userId, unfollowId } = req.body;
 
@@ -155,5 +153,17 @@ const unfollow = async (req, res) => {
     res.json(err);
   }
 };
+const getOneUser = async(req, res)=>{
+  try {
+    const posts = await userModel.find(userId).populate("posts", "caption", "postImg" );
 
-module.exports = { signup, login, userPosts, follow, unfollow };
+    console.log({ posts });
+
+    res.json(posts);
+  } catch (err) {
+    res.json(err);
+  }
+};
+
+
+module.exports = { signup, login, userPosts, follow, unfollow, getOneUser};

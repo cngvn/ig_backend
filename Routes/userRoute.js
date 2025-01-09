@@ -5,6 +5,7 @@ const {
   userPosts,
   follow,
   unfollow,
+  getOneUser,
 } = require("../Controller/userController");
 
 const userModel = require("../Models/userSchema");
@@ -18,6 +19,8 @@ userRoute.post("/login", login);
 userRoute.post("/user/posts", auth, userPosts);
 
 userRoute.post("/user/follow", auth, follow);
+
+userRoute.post("/getOneUser/:userId", auth, getOneUser);
 
 userRoute.delete("/user/unfollow", auth, unfollow);
 
