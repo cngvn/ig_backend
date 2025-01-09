@@ -20,7 +20,7 @@ userRoute.post("/user/posts", auth, userPosts);
 
 userRoute.post("/user/follow", auth, follow);
 
-userRoute.post("/getOneUser/:userId", auth, getOneUser);
+userRoute.get("/getOneUser/:userId", auth, getOneUser);
 
 userRoute.delete("/user/unfollow", auth, unfollow);
 
