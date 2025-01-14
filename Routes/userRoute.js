@@ -20,7 +20,7 @@ userRoute.post("/login", login);
 
 userRoute.post("/user/posts", auth, userPosts);
 
-userRoute.post("/user/follow", auth, follow);
+userRoute.post("/follow", auth, follow);
 
 userRoute.get("/getOneUser/:userId", auth, getOneUser);
 
@@ -28,6 +28,6 @@ userRoute.get("/followed/:userId", auth, followed);
 
 userRoute.get("/following/:userId", auth, following);
 
-userRoute.post("/user/unfollow", auth, unfollow);
+userRoute.post("/unfollow", auth, unfollow);
 
 module.exports = userRoute;
