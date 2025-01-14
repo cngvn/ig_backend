@@ -165,5 +165,25 @@ const getOneUser = async (req, res) => {
     console.log(err);
   }
 };
+const followed = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const followedUsers = await userModel.findById({ _id: userId }).populate({
+      path: "followers",
+      select: "profileImg username ",
+    });
+    res.send(followedUsers.followers);
+  } catch (error) {
+    res.send(error);
+  }
+};
 
-module.exports = { signup, login, userPosts, follow, unfollow, getOneUser };
+module.exports = {
+  signup,
+  login,
+  userPosts,
+  follow,
+  unfollow,
+  getOneUser,
+  followed,
+};
