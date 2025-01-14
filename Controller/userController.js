@@ -158,7 +158,7 @@ const getOneUser = async (req, res) => {
   try {
     const user = await userModel.findById(userId).populate({
       path: "posts",
-      select: "postImage caption ",
+      select: "postImg caption ",
     });
     res.send(user);
   } catch (err) {
