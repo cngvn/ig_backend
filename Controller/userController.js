@@ -87,70 +87,48 @@ const userPosts = async (req, res) => {
 };
 
 const follow = async (req, res) => {
-  const { userId, followId } = req.body;
-
-  if (userId == followId) {
-    return res.json("cant folow ur own shit dumass pumpkin");
-  }
-
   try {
-    const followed = await userModel.findByIdAndUpdate(
-      followId,
-      {
-        $addToSet: {
-          followers: userId,
-        },
+    const followingUserId = req.body.followingUserId;
+    const userId = req.body.userId;
+    const following = await userModel.findByIdAndUpdate(userId, {
+      $addToSet: {
+        following: followingUserId,
       },
-      { new: true }
-    );
-
-    const following = await userModel.findByIdAndUpdate(
-      userId,
-      {
-        $addToSet: {
-          following: followId,
-        },
+      new: true,
+    });
+    const follower = await userModel.findByIdAndUpdate(followingUserId, {
+      $addToSet: {
+        followers: userId,
       },
-      { new: true }
-    );
-
-    res.json({ message: "followed succesfuly" });
-  } catch (err) {
-    console.log(err);
+      new: true,
+    });
+    res.send(following);
+  } catch (error) {
+    res.send(error);
   }
 };
 
 const unfollow = async (req, res) => {
-  const { userId, unfollowId } = req.body;
-
-  if (userId == unfollowId) {
-    return res.json({ message: "cant follow urself" });
-  }
-
   try {
-    const unfollow = await userModel.findByIdAndUpdate(
-      userId,
-      {
-        $pull: {
-          following: unfollowId,
-        },
-      },
-      { new: true }
-    );
+    const userId = req.body.userId;
+    const unfollowingUserId = req.body.unfollowingUserId;
 
-    const unfollowed = await userModel.findByIdAndUpdate(
-      unfollowId,
-      {
-        $pull: {
-          followers: userId,
-        },
+    const unfollowing = await userModel.findByIdAndUpdate(userId, {
+      $pull: {
+        following: unfollowingUserId,
       },
-      { new: true }
-    );
+      new: true,
+    });
 
-    res.json({ message: "unfollowed succesfully" });
-  } catch (err) {
-    res.json(err);
+    const unfollower = await userModel.findByIdAndUpdate(unfollowingUserId, {
+      $pull: {
+        followers: userId,
+      },
+      new: true,
+    });
+    res.send(unfollowing);
+  } catch (error) {
+    res.send(error);
   }
 };
 const getOneUser = async (req, res) => {
@@ -177,6 +155,18 @@ const followed = async (req, res) => {
     res.send(error);
   }
 };
+const following = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const followingUsers = await userModel.findById({ _id: userId }).populate({
+      path: "following",
+      select: "profileImage username ",
+    });
+    res.send(followingUsers.following);
+  } catch (error) {
+    res.send(error);
+  }
+};
 
 module.exports = {
   signup,
@@ -186,4 +176,5 @@ module.exports = {
   unfollow,
   getOneUser,
   followed,
+  following,
 };
