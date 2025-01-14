@@ -153,17 +153,17 @@ const unfollow = async (req, res) => {
     res.json(err);
   }
 };
-const getOneUser = async(req, res)=>{
+const getOneUser = async (req, res) => {
+  const { userId } = req.params;
   try {
-    const posts = await userModel.find(userId).populate("posts", "caption", "postImg" );
-
-    console.log({ posts });
-
-    res.json(posts);
+    const user = await userModel.findById(userId).populate({
+      path: "posts",
+      select: "postImage caption ",
+    });
+    res.send(user);
   } catch (err) {
-    res.json(err);
+    console.log(err);
   }
 };
 
-
-module.exports = { signup, login, userPosts, follow, unfollow, getOneUser};
+module.exports = { signup, login, userPosts, follow, unfollow, getOneUser };
