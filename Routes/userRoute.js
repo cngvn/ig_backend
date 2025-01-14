@@ -28,6 +28,6 @@ userRoute.get("/followed/:userId", auth, followed);
 
 userRoute.get("/following/:userId", auth, following);
 
-userRoute.delete("/user/unfollow", auth, unfollow);
+userRoute.post("/user/unfollow", auth, unfollow);
 
 module.exports = userRoute;
